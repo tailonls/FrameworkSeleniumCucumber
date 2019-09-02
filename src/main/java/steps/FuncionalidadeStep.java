@@ -22,9 +22,9 @@ public class FuncionalidadeStep {
 		funcionalidade.informarTermoPesquisa(termoPesquisa);
 	}
 
-	@Quando("^clico no botao \"([^\"]*)\"$")
-	public void clicoNoBotao(String botao) {
-		funcionalidade.clicarBotaoPesquisa(botao);
+	@Quando("^clico no botao Pesquisa Google$")
+	public void clicoNoBotao() {
+		funcionalidade.clicarBotaoPesquisa();
 	}
 
 	@Quando("^clico na aba \"([^\"]*)\"$")
@@ -36,5 +36,40 @@ public class FuncionalidadeStep {
 	public void deveCarregarPaginaPesquisaImagens(String tipoPagina) {
 		Assert.assertTrue("Nao carregou pagina de pesquisa por [" + tipoPagina + "]",
 				funcionalidade.validaCarregametoPaginaPesquisa(tipoPagina));
+	}
+
+	@Dado("^cliquei no link do gmail$")
+	public void cliqueiNoLinkGmail() {
+
+	}
+
+	@Quando("^preencho o email$")
+	public void preenchoEmail() {
+
+	}
+
+	@Quando("^clico em \"([^\"]*)\"$")
+	public void clicoEm(String opacao) {
+
+	}
+
+	@Quando("^informo a senha$")
+	public void informoSenha() {
+
+	}
+
+	@Entao("^o login deve ser realizado com sucesso$")
+	public void loginDeveSerRealizadoComSucesso() {
+
+	}
+
+	@Quando("^clico no icone do usuario logado$")
+	public void quandoClicoNoIconeDoUsuarioLogado() {
+
+	}
+
+	@Entao("^deve aparecer um card com o email do usuario logado$")
+	public void deveAparecerUmCardComEmailDoUsuarioLogado() {
+
 	}
 }

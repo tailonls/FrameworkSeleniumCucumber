@@ -1,5 +1,8 @@
 package pages;
 
+import java.util.NoSuchElementException;
+
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -25,12 +28,27 @@ public class FuncionalidadePage extends FuncionalidadePageElementMap {
 
 	public void informarTermoPesquisa(String termoPesquisa) {
 		aguardaElemento(campoPesquisarGoogle, 3);
-		campoPesquisarGoogle.sendKeys(termoPesquisa);
+		//campoPesquisarGoogle.sendKeys(termoPesquisa);
+		
+		escrever(termoPesquisa, elemento);
+		
 		campoPesquisarGoogle.sendKeys(Keys.TAB);
 		base.logPass("Informou o termo de pesquisa [" + termoPesquisa + "]");
 	}
 
-	public void clicarBotaoPesquisa(String botao) {
+	public void escrever(String escrever, String xpath) {
+		try {
+			driver.findElement(By.xpath(xpath)).sendKeys(escrever);
+			BaseTest.logInfo("Elemento encontrado = " + elemento);
+			
+		} catch (Exception e) {
+			BaseTest.logFail("Erro ao encontrar elemento = " + elemento);
+			System.out.println(e);
+			Assert.assertTrue(false);
+		}
+	}
+
+	public void clicarBotaoPesquisa() {
 		botaoPesquisarGoogle.click();
 		base.logPass("Clicou no botão de pesquisar");
 	}

@@ -22,18 +22,19 @@ public class DriverFactory {
 				break;
 
 			case CHROME:
-				System.setProperty("webdriver.chrome.driver",
-						System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe");
-
-				driver = new ChromeDriver();
-				break;
-
-			case CHROME_HEADLESS: // Funciona a partir da versão 60 do chrome
 				ChromeOptions options = new ChromeOptions();
-				options.addArguments("--headless");
+				options.addArguments("disable-infobars");
+				options.addArguments("--disable-print-preview");
+				options.addArguments("--lang=pt-br");
 
 				System.setProperty("webdriver.chrome.driver",
 						System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe");
+
+				// Funciona a partir da versão 60 do chrome
+				if (Propriedades.CHROME_HEADLESS) {
+					options.addArguments("--headless");
+				}
+
 				driver = new ChromeDriver(options);
 				break;
 
