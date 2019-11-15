@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -16,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
+import static core.GeradorReportHTML.*;
 
 public class BasePage {
 
@@ -215,6 +217,37 @@ public class BasePage {
 			Thread.sleep(segundos * 1000);
 
 		} catch (InterruptedException e) {
+			System.out.println("Erro ao aguardar segundo: " + e.getMessage());
+		}
+	}
+	
+	public void escrever(String texto, String xpath) {
+		try {
+			driver.findElement(By.xpath(xpath)).sendKeys(texto);
+
+		} catch (Exception e) {
+			logPrintFail("Erro ao encontrar elemento na tela! " + e.getMessage());
+			Assert.assertTrue(false);
+		}
+	}
+
+	public void escrever(String texto, WebElement elementoTela) {
+		try {
+			elementoTela.sendKeys(texto);
+
+		} catch (Exception e) {
+			logPrintFail("Erro ao encontrar elemento na tela! " + e.getMessage());
+			Assert.assertTrue(false);
+		}
+	}
+	
+	public void escrever(Keys key, WebElement elementoTela) {
+		try {
+			elementoTela.sendKeys(key);
+
+		} catch (Exception e) {
+			logPrintFail("Erro ao encontrar elemento na tela! " + e.getMessage());
+			Assert.assertTrue(false);
 		}
 	}
 }

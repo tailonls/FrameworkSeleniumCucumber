@@ -3,73 +3,31 @@ package steps;
 import org.junit.Assert;
 
 import cucumber.api.java.pt.Dado;
-import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 import pages.FuncionalidadePage;
 
 public class FuncionalidadeStep {
 
-	private static FuncionalidadePage funcionalidade = new FuncionalidadePage();
+	FuncionalidadePage page = new FuncionalidadePage();
 
-	@Dado("^que acesso o site do google$")
-	public void queAcessoSiteDoGoogle() {
-		funcionalidade.acessarPaginaInicial();
+	@Dado("^que acesso o site \"([^\"]*)\"$")
+	public void queAcessoSite(String site) {
+		page.acessarPaginaInicial(site);
 	}
 
-	@E("^informo o termo \"([^\"]*)\" no campo de pesquisa$")
-	public void informoTermoNoCampoDePesquisa(String termoPesquisa) {
-		funcionalidade.informarTermoPesquisa(termoPesquisa);
+	@Entao("^a pagina inicial deve carregar$")
+	public void paginaInicialDeveCarregar() {
+		Assert.assertTrue("Pagina inicial nao carregou!", page.deveCarregarPaginaInicial());
 	}
 
-	@Quando("^clico no botao Pesquisa Google$")
-	public void clicoNoBotao() {
-		funcionalidade.clicarBotaoPesquisa();
+	@Quando("^pesquiso pelo termo \"([^\"]*)\"$")
+	public void pesquisoPeloTermo(String termo) {
+		page.pesquisarTermo(termo);
 	}
 
-	@Quando("^clico na aba \"([^\"]*)\"$")
-	public void clicoNaAba(String aba) {
-		funcionalidade.clicarAbaPesquisa(aba);
-	}
-
-	@Entao("^deve carregar a pagina de pesquisa por \"([^\"]*)\"$")
-	public void deveCarregarPaginaPesquisaImagens(String tipoPagina) {
-		Assert.assertTrue("Nao carregou pagina de pesquisa por [" + tipoPagina + "]",
-				funcionalidade.validaCarregametoPaginaPesquisa(tipoPagina));
-	}
-
-	@Dado("^cliquei no link do gmail$")
-	public void cliqueiNoLinkGmail() {
-
-	}
-
-	@Quando("^preencho o email$")
-	public void preenchoEmail() {
-
-	}
-
-	@Quando("^clico em \"([^\"]*)\"$")
-	public void clicoEm(String opacao) {
-
-	}
-
-	@Quando("^informo a senha$")
-	public void informoSenha() {
-
-	}
-
-	@Entao("^o login deve ser realizado com sucesso$")
-	public void loginDeveSerRealizadoComSucesso() {
-
-	}
-
-	@Quando("^clico no icone do usuario logado$")
-	public void quandoClicoNoIconeDoUsuarioLogado() {
-
-	}
-
-	@Entao("^deve aparecer um card com o email do usuario logado$")
-	public void deveAparecerUmCardComEmailDoUsuarioLogado() {
-
+	@Entao("^deve carregar a pagina com resultados da pesquisa$")
+	public void deveCarregarPaginaComResultados() {
+		Assert.assertTrue("Nao carregou pagina com resultados!", page.deveCarregarPaginaComResultados());
 	}
 }

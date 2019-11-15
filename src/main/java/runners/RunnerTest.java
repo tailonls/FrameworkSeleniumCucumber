@@ -12,6 +12,4 @@ import cucumber.api.junit.Cucumber;
 public class RunnerTest extends BaseTest {
 
 	// Necessário colocar o core no Glue para identificar o @After do cucumber
-
-
 }
