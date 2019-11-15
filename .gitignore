@@ -23,3 +23,12 @@
 hs_err_pid*
 /target/
 /bin/
+
+# Arquivos criados por IDE
+.classpath
+.project
+.settings/
+/settings/
+/.settings/
+.idea
+/idea

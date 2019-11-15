@@ -5,11 +5,8 @@ import java.io.FileOutputStream;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import cucumber.api.cli.Main;
 
 public class GeradorReportPDF {
 

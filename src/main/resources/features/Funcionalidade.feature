@@ -10,4 +10,12 @@ Funcionalidade: Pesquisa no Github
     Dado que acesso o site "https://github.com/"
     Entao a pagina inicial deve carregar
     Quando pesquiso pelo termo "teste"
-    Entao deve carregar a pagina com resultados da pesquisa 
+    Entao deve carregar a pagina com resultados da pesquisa
+
+  @teste
+  Cenario: Testar requisicao API rest
+    Dado url "https://jsonplaceholder.typicode.com"
+    Dado endpont "/todos/"
+    Entao o status do retorno deve ser "200"
+
+    

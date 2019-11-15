@@ -30,4 +30,19 @@ public class FuncionalidadeStep {
 	public void deveCarregarPaginaComResultados() {
 		Assert.assertTrue("Nao carregou pagina com resultados!", page.deveCarregarPaginaComResultados());
 	}
+
+	@Dado("^url \"([^\"]*)\"$")
+	public void url(String url) {
+		page.setarURL(url);
+	}
+
+	@Dado("^endpont \"([^\"]*)\"$")
+	public void endpont(String endpont) {
+		page.setarEndpoint(endpont);
+	}
+
+	@Entao("^o status do retorno deve ser \"([^\"]*)\"$")
+	public void statusRetornoDeveSer(int statusEsperado) {
+		Assert.assertTrue("Retono diferente do esperado!", page.validaStatusRetorno(statusEsperado));
+	}
 }

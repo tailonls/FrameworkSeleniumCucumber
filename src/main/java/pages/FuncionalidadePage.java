@@ -1,11 +1,6 @@
 package pages;
 
-import static core.GeradorReportHTML.logFail;
-import static core.GeradorReportHTML.logPass;
-import static core.GeradorReportHTML.logPrintFail;
-import static core.GeradorReportHTML.logPrintPaginaInteira;
-import static core.GeradorReportHTML.logPrintPass;
-
+import static core.GeradorReportHTML.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -16,11 +11,19 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+
 import core.DriverFactory;
 
 public class FuncionalidadePage extends FuncionalidadePageElementMap {
 
 	WebDriver driver = DriverFactory.getDriver();
+
+	private String URL = null;
+	private String ENDPOINT = null;
+	private HttpResponse<String> RESPONSE = null;
 
 	public FuncionalidadePage() {
 		// Inicializar elementos da classe ElementMap
@@ -77,10 +80,7 @@ public class FuncionalidadePage extends FuncionalidadePageElementMap {
 	public boolean validandoVariosElementos() {
 		AtomicBoolean validar = new AtomicBoolean();
 
-		validar.set(
-				comparaValores("casa", "casa") && 
-				comparaValores("casa", "CASA") && 
-				comparaValores("casa", "caza"));
+		validar.set(comparaValores("casa", "casa") && comparaValores("casa", "CASA") && comparaValores("casa", "caza"));
 
 		if (validar.get())
 			logPass("Valores estavam de acordo com o esperado!");
@@ -94,5 +94,34 @@ public class FuncionalidadePage extends FuncionalidadePageElementMap {
 			logFail("Erro: valor esperado: [" + valorEsperado + "] valor recebido: [" + valorObtido + "]!");
 
 		return valida;
+	}
+
+	public void setarURL(String url) {
+		URL = url;
+		logInfo("Setou URL: " + URL);
+	}
+
+	public void setarEndpoint(String endpont) {
+		ENDPOINT = endpont;
+		logInfo("Setou ENDPOINT: " + ENDPOINT);
+	}
+
+	public boolean validaStatusRetorno(int statusEsperado) {
+
+		try {
+			RESPONSE = Unirest.get(URL + ENDPOINT).header("accept", "application/json").asString();
+			logInfo("Executou requisicao do tipo GET...");
+
+		} catch (Exception e) {
+			logFail("Erro ao realizar requisicao GET: " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		if (RESPONSE.getStatus() == statusEsperado) {
+			logPass("Status da requisicao retornou conforme esperado: " + RESPONSE.getStatus());
+			return true;
+		}
+		logFail("Erro! Status da requisicao esperado: " + statusEsperado + " status obtido: " + RESPONSE.getStatus());
+		return false;
 	}
 }
