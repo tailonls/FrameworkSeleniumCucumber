@@ -16,7 +16,7 @@ Para criar um novo teste (Necessário ter o mínimo de conhecimento em Selenium,
 - Escreva os steps do teste no padrão BDD utilizando a linguagem Gherkin:
 
 	Ex: 
-		Cenario: Testar pesqusia no google
+		Cenario: Testar pesquisa no google
 			Dado que acesso o site google
 			E pesquiso pela termo "Assistir filme online"
 			E clico no botao "Pesquisar"
