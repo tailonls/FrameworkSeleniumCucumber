@@ -1,6 +1,13 @@
 package pages;
 
+import static core.GeradorReportHTML.logFail;
+import static core.GeradorReportHTML.logPass;
+import static core.GeradorReportHTML.logPrintFail;
+import static core.GeradorReportHTML.logPrintPaginaInteira;
+import static core.GeradorReportHTML.logPrintPass;
+
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -8,7 +15,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import static core.GeradorReportHTML.*;
+
 import core.DriverFactory;
 
 public class FuncionalidadePage extends FuncionalidadePageElementMap {
@@ -39,7 +46,7 @@ public class FuncionalidadePage extends FuncionalidadePageElementMap {
 
 	public void pesquisarTermo(String termo) {
 		aguardarSegundos(1);
-		
+
 		WebElement campoPesquisa = aguardaElemento(By.xpath(CAMPO_PESQUISA), 3);
 
 		if (campoPesquisa != null) {
@@ -64,5 +71,28 @@ public class FuncionalidadePage extends FuncionalidadePageElementMap {
 
 		logPrintFail("Pagina com resultados NAO apareceu!");
 		return false;
+	}
+
+	// PARA USO FUTURO
+	public boolean validandoVariosElementos() {
+		AtomicBoolean validar = new AtomicBoolean();
+
+		validar.set(
+				comparaValores("casa", "casa") && 
+				comparaValores("casa", "CASA") && 
+				comparaValores("casa", "caza"));
+
+		if (validar.get())
+			logPass("Valores estavam de acordo com o esperado!");
+
+		return validar.get();
+	}
+
+	public boolean comparaValores(String valorEsperado, String valorObtido) {
+		boolean valida = valorEsperado.equalsIgnoreCase(valorObtido);
+		if (!valida)
+			logFail("Erro: valor esperado: [" + valorEsperado + "] valor recebido: [" + valorObtido + "]!");
+
+		return valida;
 	}
 }
