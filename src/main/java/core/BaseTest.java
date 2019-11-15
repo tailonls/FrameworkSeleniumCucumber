@@ -16,8 +16,6 @@ public class BaseTest extends GeradorReportHTML {
 	@BeforeClass
 	public static void iniciarTestes() throws IOException {
 		inicializarReportHTML();
-		
-		// TODO: crair report PDF
 	}
 
 	@Before
@@ -39,6 +37,7 @@ public class BaseTest extends GeradorReportHTML {
 	@AfterClass
 	public static void finalizarTestes() throws IOException {
 		atualizaReportHTML();
+		encerraReportPDF();
 		killDriver();
 	}
 }

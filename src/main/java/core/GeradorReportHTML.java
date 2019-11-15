@@ -19,17 +19,21 @@ import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
-public class GeradorReportHTML {
+public class GeradorReportHTML extends GeradorReportPDF {
 
 	static ExtentReports extent;
 	static ExtentTest logger;
 	static ExtentHtmlReporter reporter;
+	
+	private static String PATH = "target/Reports/";
 
 	public static void inicializarReportHTML() throws IOException {
-		new File("target/Reports").mkdir();
+		//TODO: como fiz no projeto do caixa?
+		
+		new File(PATH).mkdir();
 		new File("target/Screenshot").mkdir();
 
-		reporter = new ExtentHtmlReporter("target/Reports/Relatorios_testes.html");
+		reporter = new ExtentHtmlReporter(PATH + "RelatorioTestes.html");
 		extent = new ExtentReports();
 		extent.attachReporter(reporter);
 	}
@@ -37,6 +41,8 @@ public class GeradorReportHTML {
 	public static void addCenarioReportHTML(Scenario cenario) throws IOException {
 		logger = extent.createTest(cenario.getName());
 		atualizaReportHTML();
+		
+		inicializarReportPDF(cenario.getName());
 	}
 
 	public static void atualizaReportHTML() {
@@ -46,6 +52,8 @@ public class GeradorReportHTML {
 	public static void logPass(String log) {
 		logger.pass(log);
 		atualizaReportHTML();
+		
+		addParagrafoReportPDF(log);
 	}
 
 	public static void logPrintPass(String log) {
@@ -54,6 +62,9 @@ public class GeradorReportHTML {
 			logger.pass(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
 			atualizaReportHTML();
 
+			addParagrafoReportPDF(log);
+			addImagemReportPDF(temp);
+			
 		} catch (IOException e) {
 			logFail("Capture Failed " + e.getMessage());
 		}
@@ -62,6 +73,8 @@ public class GeradorReportHTML {
 	public static void logFail(String log) {
 		logger.fail(log);
 		atualizaReportHTML();
+		
+		addParagrafoReportPDF(log);
 	}
 
 	public static void logPrintFail(String log) {
@@ -70,6 +83,9 @@ public class GeradorReportHTML {
 			logger.fail(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
 			atualizaReportHTML();
 
+			addParagrafoReportPDF(log);
+			addImagemReportPDF(temp);
+			
 		} catch (IOException e) {
 			logFail("Capture Failed " + e.getMessage());
 		}
@@ -78,6 +94,8 @@ public class GeradorReportHTML {
 	public static void logInfo(String log) {
 		logger.info(log);
 		atualizaReportHTML();
+		
+		addParagrafoReportPDF(log);
 	}
 
 	public static String getScreenshot() {
@@ -100,6 +118,9 @@ public class GeradorReportHTML {
 			logger.pass(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
 			atualizaReportHTML();
 
+			addParagrafoReportPDF(log);
+			addImagemReportPDF(temp);
+			
 		} catch (IOException e) {
 			logFail("Capture Failed " + e.getMessage());
 		}
