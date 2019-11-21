@@ -122,21 +122,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
 
 		addParagrafoReportPDF(log);
 	}
-
-	public static String getScreenshot() {
-		File src = ((TakesScreenshot) DriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
-
-		String path = System.getProperty("user.dir") + "/target/Screenshot/" + System.currentTimeMillis() + ".png";
-		File destination = new File(path);
-
-		try {
-			FileUtils.copyFile(src, destination);
-		} catch (IOException e) {
-			System.out.println("Capture Failed " + e.getMessage());
-		}
-		return path;
-	}
-
+	
 	public static void logPrintPaginaInteira(String log) {
 		try {
 			String temp = getScreenshotAllPage();
@@ -151,6 +137,21 @@ public class GeradorReportHTML extends GeradorReportPDF {
 		}
 	}
 
+	public static String getScreenshot() {
+		File src = ((TakesScreenshot) DriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
+
+		String path = System.getProperty("user.dir") + "/target/Screenshot/" + System.currentTimeMillis() + ".png";
+		File destination = new File(path);
+
+		try {
+			FileUtils.copyFile(src, destination);
+		} catch (IOException e) {
+			System.out.println("Capture Failed " + e.getMessage());
+		}
+		return path;
+	}
+	
+
 	public static String getScreenshotAllPage() throws IOException {
 		String path = System.getProperty("user.dir") + "/target/Screenshot/" + System.currentTimeMillis() + ".png";
 
@@ -163,8 +164,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
 	}
 
 	public static void addCategoriaReport(String cenario) {
-		String categoria = null;
-
+		
 		if (cenario.toUpperCase().contains("API") || cenario.toUpperCase().contains("SERVICO") || cenario.toUpperCase().contains("REST"))
 			logger.assignCategory("API");
 

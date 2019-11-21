@@ -64,8 +64,13 @@ public class GeradorReportPDF {
 
 	public static void encerraReportPDF() {
 		if (document != null && writer != null) {
-			document.close();
-			writer.close();
+			try {
+				document.close();
+				writer.close();
+			} catch (Exception e) {
+				System.out.println("Erro ao PDF! " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 }

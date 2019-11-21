@@ -1,6 +1,12 @@
 package pages;
 
-import static core.GeradorReportHTML.*;
+import static core.GeradorReportHTML.logFail;
+import static core.GeradorReportHTML.logInfo;
+import static core.GeradorReportHTML.logPass;
+import static core.GeradorReportHTML.logPrintFail;
+import static core.GeradorReportHTML.logPrintPaginaInteira;
+import static core.GeradorReportHTML.logPrintPass;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -12,7 +18,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 
 import core.DriverFactory;

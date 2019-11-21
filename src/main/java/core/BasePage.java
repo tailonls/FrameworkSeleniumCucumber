@@ -1,7 +1,9 @@
 package core;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
@@ -21,9 +23,18 @@ import static core.GeradorReportHTML.*;
 
 public class BasePage {
 
+	public static Properties properties = new Properties();
+
 	WebDriver driver = DriverFactory.getDriver();
 
 	public BasePage() {
+		try {
+			properties.load(BaseTest.class.getClassLoader().getResourceAsStream("config.properties"));
+			logInfo("Responsavel pelos testes: " + properties.getProperty("teste.nome"));
+			
+		} catch (IOException e) {
+			System.out.println("Erro ao carregar arquivo de properties: " + e.getMessage());
+		}
 	}
 
 	public void clicaBotao(String id) {
@@ -229,6 +240,14 @@ public class BasePage {
 			logPrintFail("Erro ao encontrar elemento na tela! " + e.getMessage());
 			Assert.assertTrue(false);
 		}
+	}
+	
+	public boolean elementoPresente(String elemento) {
+		aguardarSegundos(2);
+		if (!driver.findElements(By.xpath(elemento)).isEmpty()) {
+			return true;			
+		}
+		return false;
 	}
 
 	public void escrever(String texto, WebElement elementoTela) {
