@@ -12,9 +12,8 @@ Ao final do teste será gerado um relatório contendo os prints da imagem de cad
 
 - Java JDK (De preferência versão mais atualizada).
 - Variáveis de ambiente JAVA_HOME e PATH configuradas.
-- Gradle (Para gerenciar dependências).
-- CaixaNET (sistema que será testado).
-- Winium Desktop (Driver para rodar testes em programas desktop).
+- Maven (Para gerenciar dependências).
+- Alguma IDE (Eclipse, IntelliJ, etc) que facilite nos testes.
 
 ## Estrutura do projeto:
 
