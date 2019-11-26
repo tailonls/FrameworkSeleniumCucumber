@@ -33,12 +33,11 @@ Ao final do teste será gerado um relatório contendo os prints da imagem de cad
 
 ## Ordem dos arquivos durante um teste:
 
-```mermaid
-graph LR
-A[Runner] -- Acionam --> B[Arquivos .feature]
-B -- Implementados pelas --> C[Classes Step]
-C -- Que utilizam --> D[Classes Pages]
-```
+	1) [Classe Runner] Aciona...
+    	2) [Arquivos de feature] Implementados pelas...
+    	3) [Classes Step] Que utilizam...
+    	4) [Classes Pages] Que utilizam...
+    	5) [Classes ElementMap]
 
 ## Para rodar um teste:
 
