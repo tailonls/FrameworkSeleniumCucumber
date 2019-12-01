@@ -30,8 +30,7 @@ public class BasePage {
 	public BasePage() {
 		try {
 			properties.load(BaseTest.class.getClassLoader().getResourceAsStream("config.properties"));
-			logInfo("Responsavel pelos testes: " + properties.getProperty("teste.nome"));
-			
+
 		} catch (IOException e) {
 			System.out.println("Erro ao carregar arquivo de properties: " + e.getMessage());
 		}

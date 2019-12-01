@@ -1,32 +1,44 @@
 package core;
 
+import static utils.DataUtils.converterData;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDateTime;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class GeradorReportPDF {
+public class GeradorReportPDF extends BasePage{
 
-	private static Document document = null;
-	private static PdfWriter writer = null;
-	private static String PATH = "target/Evidencias/";
+	private static Document documento = null;
+	private static String PATH = "target/Evidencias";
+	private static LocalDateTime dataLocal = LocalDateTime.now();
+	
+	private static String responsavelTestes = properties.getProperty("teste.nome");
 
-	public static void inicializarReportPDF(String nomeCenario) {
+	public static void criaNovoReportPDF(String nomeCenario) {
+		new File(PATH).mkdir();
+		documento = new Document();
+		
 		try {
-			new File(PATH).mkdir();
+			PdfWriter.getInstance(documento, new FileOutputStream(PATH + "/" + nomeCenario + ".pdf"));
+			documento.open();
 
-			document = new Document();
-			writer = PdfWriter.getInstance(document, new FileOutputStream(PATH + nomeCenario + ".pdf"));
-			document.open();
+			documento.addAuthor(responsavelTestes);
+			documento.addCreationDate();
+			documento.addCreator("Automação testes");
+			documento.addTitle("Cenario: " + nomeCenario);
+			documento.addSubject("Arquivo PDF criado por um teste automatizado!");
+			
 
-			document.addAuthor("Tailon Saraiva");
-			document.addCreationDate();
-			document.addCreator("Automação testes");
-			document.addTitle("Cenario: " + nomeCenario);
-			document.addSubject("Arquivo PDF criado por um teste automatizado!");
+			addParagrafoReportPDF("Cenario: " + nomeCenario);
+			addParagrafoReportPDF("Responsavel pelos testes: " + responsavelTestes);
+			addParagrafoReportPDF("Executado em: " + converterData(dataLocal));
+			addParagrafoReportPDF("______________________________________________________");
+			addParagrafoReportPDF("\n");
 
 		} catch (Exception e) {
 			System.out.println("Erro ao inicializar report PDF! " + e.getMessage());
@@ -36,9 +48,9 @@ public class GeradorReportPDF {
 
 	public static void addParagrafoReportPDF(String paragrafo) {
 
-		if (document != null && writer != null) {
+		if (documento.isOpen()) {
 			try {
-				document.add(new Paragraph(paragrafo));
+				documento.add(new Paragraph("\n" + paragrafo));
 
 			} catch (Exception e) {
 				System.out.println("Erro ao adicionar paragrafo no PDF!");
@@ -47,30 +59,37 @@ public class GeradorReportPDF {
 		}
 	}
 
-	public static void addImagemReportPDF(String path) {
+	public static void addImagemReportPDF(String path_imagem) {
+		try {
 
-		if (document != null && writer != null) {
-			try {
-				Image imagem = Image.getInstance(path);
-				imagem.scaleToFit(500, 350);
-				document.add(imagem);
-
-			} catch (Exception e) {
-				System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
-				e.printStackTrace();
+			if (documento.isOpen()) {
+				Image imagem = Image.getInstance(path_imagem);
+				imagem.scaleAbsolute(500, 250);
+				documento.add(imagem);
 			}
+
+		} catch (Exception e) {
+			System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addImagemPaginaInteiraReportPDF(String path_imagem) {
+		try {
+			
+			if (documento.isOpen()) {
+				Image imagem = Image.getInstance(path_imagem);
+				imagem.scaleAbsolute(350, 550);
+				documento.add(imagem);
+			}
+
+		} catch (Exception e) {
+			System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
 	public static void encerraReportPDF() {
-		if (document != null && writer != null) {
-			try {
-				document.close();
-				writer.close();
-			} catch (Exception e) {
-				System.out.println("Erro ao PDF! " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
+		documento.close();
 	}
 }

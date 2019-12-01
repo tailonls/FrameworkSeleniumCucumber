@@ -1,10 +1,7 @@
 package core;
 
-import static utils.DataUtils.converterData;
-
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 import javax.imageio.ImageIO;
 
@@ -24,57 +21,59 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 public class GeradorReportHTML extends GeradorReportPDF {
 
-	static ExtentReports extent;
-	static ExtentTest logger;
-	static ExtentHtmlReporter reporter;
-
-	private static LocalDateTime dataLocal = LocalDateTime.now();
-	private static String PATH = "target/Reports/";
+	static ExtentReports extensao = null;
+	static ExtentTest logger = null;
+	static ExtentHtmlReporter relatorio = null;
+	
+	private static String PATH_REPORT = "target/ReportHTML/";
+	private static String PATH_IMAGENS = "Screenshot/";
 
 	public static void inicializarReportHTML() throws IOException {
-		// TODO: como fiz no projeto do caixa?
 
-		new File(PATH).mkdir();
-		new File("target/Screenshot").mkdir();
+		if (relatorio == null && extensao == null) {
+			new File(PATH_REPORT).mkdir();
+			new File(PATH_REPORT + PATH_IMAGENS).mkdir();
 
-		reporter = new ExtentHtmlReporter(PATH + "RelatorioTestes.html");
-		extent = new ExtentReports();
-		extent.attachReporter(reporter);
+			relatorio = new ExtentHtmlReporter(PATH_REPORT + "RelatorioTestes.html");
+			extensao = new ExtentReports();
+			extensao.attachReporter(relatorio);
+		}
 	}
 
 	public static void addCenarioReportHTML(Scenario cenario) throws IOException {
-		logger = extent.createTest(cenario.getName());
-		logger.assignAuthor("Tailon Saraiva");
-		addCategoriaReport(cenario.getName());
-
-		atualizaReportHTML();
-
-		inicializarReportPDF(cenario.getName());
-		addParagrafoReportPDF("Cenario: " + cenario.getName());
-		addParagrafoReportPDF("Executado em: " + converterData(dataLocal));
-		addParagrafoReportPDF("_____________________________________________________________");
-		addParagrafoReportPDF("\n");
+		
+		if (relatorio != null && extensao != null) {
+			
+			logger = extensao.createTest(cenario.getName());
+			logger.assignAuthor("Tailon Saraiva");
+			addCategoriaReport(cenario.getName());
+	
+			atualizaReportHTML();
+	
+			criaNovoReportPDF(cenario.getName());
+		}
 	}
 
 	public static void atualizaReportHTML() {
-		extent.flush();
+		extensao.flush();
 	}
 
 	public static void logPass(String log) {
 		logger.pass(log);
 		atualizaReportHTML();
 
-		addParagrafoReportPDF(log);
+		addParagrafoReportPDF("PASSOU: " + log);
 	}
 
 	public static void logPrintPass(String log) {
+		
 		try {
 			String temp = getScreenshot();
 			logger.pass(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
 			atualizaReportHTML();
 
-			addParagrafoReportPDF(log);
-			addImagemReportPDF(temp);
+			addParagrafoReportPDF("PASSOU: " + log);
+			addImagemReportPDF(PATH_REPORT + temp);
 
 		} catch (IOException e) {
 			logFail("Capture Failed " + e.getMessage());
@@ -85,7 +84,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
 		logger.fail(log);
 		atualizaReportHTML();
 
-		addParagrafoReportPDF(log);
+		addParagrafoReportPDF("FALHOU: " + log);
 	}
 
 	public static void logPrintFail(String log) {
@@ -94,8 +93,8 @@ public class GeradorReportHTML extends GeradorReportPDF {
 			logger.fail(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
 			atualizaReportHTML();
 
-			addParagrafoReportPDF(log);
-			addImagemReportPDF(temp);
+			addParagrafoReportPDF("FALHOU: " + log);
+			addImagemReportPDF(PATH_REPORT + temp);
 
 		} catch (IOException e) {
 			logFail("Capture Failed " + e.getMessage());
@@ -113,14 +112,14 @@ public class GeradorReportHTML extends GeradorReportPDF {
 		logger.warning(log);
 		atualizaReportHTML();
 
-		addParagrafoReportPDF(log);
+		addParagrafoReportPDF("AVISO:" + log);
 	}
 
 	public static void logErro(String log) {
 		logger.error(log);
 		atualizaReportHTML();
 
-		addParagrafoReportPDF(log);
+		addParagrafoReportPDF("ERRO: " + log);
 	}
 	
 	public static void logPrintPaginaInteira(String log) {
@@ -130,7 +129,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
 			atualizaReportHTML();
 
 			addParagrafoReportPDF(log);
-			addImagemReportPDF(temp);
+			addImagemPaginaInteiraReportPDF(PATH_REPORT + temp);
 
 		} catch (IOException e) {
 			logFail("Capture Failed " + e.getMessage());
@@ -140,27 +139,27 @@ public class GeradorReportHTML extends GeradorReportPDF {
 	public static String getScreenshot() {
 		File src = ((TakesScreenshot) DriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
 
-		String path = System.getProperty("user.dir") + "/target/Screenshot/" + System.currentTimeMillis() + ".png";
-		File destination = new File(path);
+		String PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
+		File destination = new File(PATH_REPORT + PATH_TEMPORARIO);
 
 		try {
 			FileUtils.copyFile(src, destination);
 		} catch (IOException e) {
 			System.out.println("Capture Failed " + e.getMessage());
 		}
-		return path;
+		return PATH_TEMPORARIO;
 	}
 	
 
 	public static String getScreenshotAllPage() throws IOException {
-		String path = System.getProperty("user.dir") + "/target/Screenshot/" + System.currentTimeMillis() + ".png";
+		String PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
 
 		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000))
 				.takeScreenshot(DriverFactory.getDriver());
 
-		ImageIO.write(screenshot.getImage(), "PNG", new File(path));
+		ImageIO.write(screenshot.getImage(), "PNG", new File(PATH_REPORT + PATH_TEMPORARIO));
 
-		return path;
+		return PATH_TEMPORARIO;
 	}
 
 	public static void addCategoriaReport(String cenario) {
