@@ -19,12 +19,12 @@ Ao final do teste será gerado um relatório contendo os prints da imagem de cad
 
 >Caixa-Test
 >>src/main/java
-	>>>**core:** Classes base do projeto para configurações de driver e dos cenários.
-	>>>**pages:** Cada tela deve possuir a classe com métodos únicos.
-	>>>**servicos:** Classes com métodos que interagem com os serviços **Rest** e **Base de Dados**.
-	>>>**steps:**  Classes com métodos que implementam o que está no arquivo de feature.
-	>>>**tests:** Classes que iniciam os cenários no arquivo de feature.
-	>>>**utils:** Classes reutilizáveis como conversão de datas ou textos.
+	>>>- **core:** Classes base do projeto para configurações de driver e dos cenários.
+	>>>- **pages:** Cada tela deve possuir a classe com métodos únicos.
+	>>>- **servicos:** Classes com métodos que interagem com os serviços **Rest** e **Base de Dados**.
+	>>>- **steps:**  Classes com métodos que implementam o que está no arquivo de feature.
+	>>>- **tests:** Classes que iniciam os cenários no arquivo de feature.
+	>>>- **utils:** Classes reutilizáveis como conversão de datas ou textos.
 
 >>src/main/resources
 >>>**features:** Arquivos com os cenários escritos em BDD.
