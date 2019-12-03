@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta name="generator" content="HTML Tidy for HTML5 for Linux version 5.2.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+		<title>Report</title>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				// Obtem a data/hora atual
+				var data = new Date();
+
+				// Guarda cada pedaco em uma variavel
+				var dia     = data.getDate();           // 1-31
+				var dia_sem = data.getDay();            // 0-6 (zero=domingo)
+				var mes     = data.getMonth();          // 0-11 (zero=janeiro)
+				var ano2    = data.getYear();           // 2 digitos
+				var ano4    = data.getFullYear();       // 4 digitos
+				var hora    = data.getHours();          // 0-23
+				var min     = data.getMinutes();        // 0-59
+				var seg     = data.getSeconds();        // 0-59
+				var mseg    = data.getMilliseconds();   // 0-999
+				var tz      = data.getTimezoneOffset(); // em minutos
+
+				// Formata a data e a hora (note o mes + 1)
+				var str_data = dia + '/' + (mes+1) + '/' + ano4;
+				var str_hora = hora + 'h' + min + 'm';
+
+				$('#dataHora').html(str_data + '  ' + str_hora);
+
+
+				// Get the modal
+				var modal = document.getElementById('myModal');
+
+				// Get the image and insert it inside the modal - use its "alt" text as a caption
+				//var img = document.getElementsByClassName('image');
+				var modalImg = document.getElementById("img01");
+				var captionText = document.getElementById("caption");
+				$(".image").click(function() {
+					console.log("Clicou na imagem " + this.alt);
+					modal.style.display = "block";
+					modalImg.src = this.src;
+					captionText.innerHTML = this.alt;
+				});
+
+				// Get the <span> element that closes the modal
+				var span = document.getElementsByClassName("close")[0];
+
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function() {
+				  modal.style.display = "none";
+				}
+			});
+		</script>
+		<style>
+			.OK { color: green; font-weight: bold }
+			.FAIL { color: red; font-weight: bold }
+			.INFO { color: blue; font-weight: bold }
+			.WARNING { color: yellow; font-weight: bold }
+
+			.footer_passed { font-weight: bold; background-color: green; text-align:center; color: white; cursor: pointer; }
+			.footer_failed { font-weight: bold; background-color: #dc3545; text-align:center; color: white; cursor: pointer; }
+
+			/* Chart */
+			#principal{
+			  width:500px;
+			  height:60px;
+			  margin-left:10px;
+			  font-family:Verdana, Helvetica, sans-serif;
+			  font-size:14px;
+			}
+			#barras{
+			  width:428px;
+			  height:30px;
+			  float:left;
+			  margin: 2px 0;
+			}
+			.barra1, .barra2 {
+			  color:#FFF;
+			  padding-left:10px;
+			  height:30px;
+			  line-height:30px;
+			}
+			.barraVermelha{ background-color: #CC0000; }
+			.barraVerde{ background-color: #00CC00; }
+
+			/* Style the Image Used to Trigger the Modal */
+			.image {
+				border-radius: 5px;
+				cursor: pointer;
+				transition: 0.3s;
+			}
+
+			.image:hover {opacity: 0.7;}
+
+			/* The Modal (background) */
+			.modal {
+				display: none; /* Hidden by default */
+				position: fixed; /* Stay in place */
+				z-index: 1; /* Sit on top */
+				padding-top: 100px; /* Location of the box */
+				left: 0;
+				top: 0;
+				width: 100%; /* Full width */
+				height: 100%; /* Full height */
+				overflow: auto; /* Enable scroll if needed */
+				background-color: rgb(0,0,0); /* Fallback color */
+				background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+			}
+
+			/* Modal Content (Image) */
+			.modal-content {
+				margin: auto;
+				display: block;
+				width: 80%;
+				max-width: 1000px;
+			}
+
+			/* Caption of Modal Image (Image Text) - Same Width as the Image */
+			#caption {
+				margin: auto;
+				display: block;
+				width: 80%;
+				max-width: 700px;
+				text-align: center;
+				color: #ccc;
+				padding: 10px 0;
+				height: 150px;
+			}
+
+			/* Add Animation - Zoom in the Modal */
+			.modal-content, #caption {
+				animation-name: zoom;
+				animation-duration: 0.6s;
+			}
+
+			@keyframes zoom {
+				from {transform:scale(0)}
+				to {transform:scale(1)}
+			}
+
+			#info-cabecalho {
+				 background-color: #bbbaba;
+				 color:#FFFFFF;
+
+			}
+
+
+			#info-cabecalho-mensagem {
+				 font-size: 20px;
+
+			}
+
+			/* The Close Button */
+			.close {
+				position: absolute;
+				top: 15px;
+				right: 35px;
+				color: #f1f1f1;
+				font-size: 40px;
+				font-weight: bold;
+				transition: 0.3s;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: #bbb;
+				text-decoration: none;
+				cursor: pointer;
+			}
+
+			/* 100% Image Width on Smaller Screens */
+			@media only screen and (max-width: 700px){
+				.modal-content {
+					width: 100%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark fixed" style="margin-bottom: 50px; background-color: #066A4A !important;">
+		<div style="margin-right:20px">
+			<img src="">
+		</div>
+		<a class="navbar-brand" href="#">Report - Automação de testes Internet Banking</a>
+		<div class="collapse navbar-collapse" id="navbarColor02">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a class="nav-link" href="#"><span class="sr-only">(current)</span></a></li>
+			</ul>
+			<div class="form-inline"><span id="dataHora" class="nav-link" style="color:#FFFFFF"></span></div>
+		</div>
+		</nav>
+		
+		<!-- The Modal -->
+		<div id="myModal" class="modal"><!-- The Close Button -->
+			<span class="close">×</span> <!-- Modal Content (The Image) -->
+				<img class="modal-content" id="img01"> 
+			<!-- Modal Caption (Image Text) -->
+			<div id="caption"></div>
+		</div>
+
+		{% if num_casos_de_teste > 1 %}
+		<p>
+			<b>Total:</b> {{ num_casos_de_teste }}
+			<b>Passed:</b> {{ num_casos_de_teste_com_sucesso }}
+			<b>Failed:</b> {{ num_casos_de_teste_com_falha }}
+		</p>
+
+		<div id="principal">
+			<div id="barras">
+				<div class="barraVerde" style="width: {{ num_casos_de_teste_com_sucesso / num_casos_de_teste * 100 }}%">
+					{{ num_casos_de_teste_com_sucesso / num_casos_de_teste * 100 }}%
+				</div>
+			</div>
+			<div id="barras">
+				<div class="barraVermelha" style="width: {{ num_casos_de_teste_com_falha / num_casos_de_teste * 100 }}%">
+					{{ num_casos_de_teste_com_falha / num_casos_de_teste * 100 }}%
+				</div>
+			</div>
+		</div>
+		<br>
+		{% endif %}
+
+		{% for caso_de_teste in casos_de_teste %}
+		<button style="border-color: #fff0; cursor: pointer;" data-toggle="collapse" id="btn_{{ caso_de_teste.id }}" data-target="#div_{{ caso_de_teste.id }}">
+			<h2 style="font-size: 25px">{{ caso_de_teste.nome }} <span style="font-size: 14px"># {{ caso_de_teste.horario }}</span></h2>
+		</button>
+		<div id="div_{{ caso_de_teste.id }}" {% if num_casos_de_teste > 1 %}class="collapse"{% endif %}>
+			<table class="table table-sm" style="color: #080808; background-color: #dcd9d9b8;">
+				<thead>
+					<tr>
+						<th style="width:25%">#</th>
+						<th style="width:70%">ATIVIDADE</th>
+						<th style="width:5%">STATUS</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					{% for secao in caso_de_teste.secoes %}
+					<tr id="info-cabecalho">
+						<td></td>
+						<td id="info-cabecalho-mensagem"><b>{{ secao.nome }}</b></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+					{% for registro in secao.registros %}
+					{% if registro.imagem is none %}
+					<tr>
+						<td>{{ registro.horario }}</td>
+						<td>{{ registro.mensagem }}</td>
+						<td class="{{ registro.status }}">{{ registro.status }}</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td>{{ registro.horario }}</td>
+						<td style="line-height: 50px;" class="{{ registro.status }}">{{ registro.mensagem }}
+							<img class="image" id="myImg" src="{{ registro.imagem }}" alt="" style="width:100%; max-width:100px; float: right"></td>
+						<td class="{{ registro.status }}">{{ registro.status }}</td>
+					</tr>
+					{% endif %}
+					{% endfor %}
+					{% endfor %}
+
+					{% if caso_de_teste.teve_sucesso %}
+					<tr data-toggle="collapse" data-target="#div_{{ caso_de_teste.id }}" class="footer_passed">
+						<td colspan="3">O TEST CASE PASSOU!</td>
+					</tr>
+					{% else %}
+					<tr data-toggle="collapse" data-target="#div_{{ caso_de_teste.id }}" class="footer_failed">
+						<td colspan="3">O TEST CASE FALHOU.</td>
+					</tr>
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<style>
+			{% if caso_de_teste.teve_sucesso %}
+			#btn_{{ caso_de_teste.id }} { color: #fff; background-color: #23a342; border-color: #fff0; width: 100%; text-align: left; }
+			{% else %}
+			#btn_{{ caso_de_teste.id }} { color: #fff; background-color: #da1b20; border-color: #fff0; width: 100%; text-align: left;}
+			{% endif %}
+		</style>
+		{% endfor %}
+    </body>
+</html>
