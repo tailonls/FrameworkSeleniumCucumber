@@ -1,5 +1,7 @@
 package core;
 
+import static core.GeradorReportHTML.logPrintFail;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,7 +21,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
-import static core.GeradorReportHTML.*;
 
 public class BasePage {
 

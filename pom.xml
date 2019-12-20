@@ -8,17 +8,21 @@
 	<dependencies>
 		<!-- DEPENDÊNCIA DO CUCUMBER -->
 		<dependency>
-			<groupId>info.cukes</groupId>
+			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>1.2.5</version>
+			<version>4.8.0</version>
 		</dependency>
 
-		<!-- DEPENDÊNCIA DO CUCUMBER -->
 		<dependency>
-			<groupId>info.cukes</groupId>
+			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit</artifactId>
-			<version>1.2.5</version>
-			<scope>test</scope>
+			<version>4.8.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-core</artifactId>
+			<version>4.8.0</version>
 		</dependency>
 
 		<!-- DEPENDÊNCIA DO SELENIUM -->
@@ -49,14 +53,14 @@
 			<artifactId>ashot</artifactId>
 			<version>1.5.4</version>
 		</dependency>
-		
+
 		<!-- ITEXT: CRIAR REPORT PDF -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
 			<version>5.0.6</version>
 		</dependency>
-		
+
 		<!-- UNIREST: TESTE DE API -->
 		<dependency>
 			<groupId>com.mashape.unirest</groupId>
