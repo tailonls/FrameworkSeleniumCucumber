@@ -1,5 +1,8 @@
 # FrameworkSeleniumCucumber
 
+https://www.concrete.com.br/2018/08/24/cucumber-truques-e-dicas/
+
+
 Framework Selenium para automação de testes (Maven + Java + JUnit + Cucumber)
 
 Para executar os testes basta rodar as classes dentro do diretório \src\test\java\runners, essa classe irá executar os testes escritos em BDD nos arquivos de Features contidos no diretório src\test\resources\features.
