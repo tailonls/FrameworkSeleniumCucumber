@@ -108,3 +108,25 @@ Para criar um novo teste (Necessário ter o mínimo de conhecimento em Selenium,
 
 - Agora basta implementar cada método que fara o teste na classe page utilizando os elementos mapeados na classe **ElementMap** e utilizar esses métodos na classe **Step**.
 
+
+
+---
+
+  if (contadorCenarios == 0) {
+
+                File reportes = new File(PATH);
+                if (reportes.exists() && reportes.isDirectory()) {
+                    File[] files = reportes.listFiles();
+                    for (File fileToDelete : files) // Apagando pasta com html de testes anteriores
+                        fileToDelete.delete();
+                    reportes.delete();
+                }
+
+                File screenshots = new File(PATH + PATH_IMAGENS);
+                if (screenshots.exists() && screenshots.isDirectory()) {
+                    File[] files = screenshots.listFiles();
+                    for (File fileToDelete : files) // Apagando pasta com imagens de testes anteriores
+                        fileToDelete.delete();
+                    screenshots.delete();
+                }
+            }
