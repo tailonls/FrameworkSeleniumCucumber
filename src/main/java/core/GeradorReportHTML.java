@@ -1,5 +1,7 @@
 package core;
 
+import static core.DriverFactory.getDriver;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -18,7 +20,6 @@ import io.cucumber.core.api.Scenario;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
-import static core.DriverFactory.getDriver;
 
 public class GeradorReportHTML extends GeradorReportPDF {
 
@@ -30,6 +31,30 @@ public class GeradorReportHTML extends GeradorReportPDF {
 	private static String PATH_IMAGENS = "Screenshot/";
 
 	public static void inicializarReportHTML() throws IOException {
+
+		// Apagando pasta com html de testes anteriores
+		File reportes = new File(PATH_REPORT);
+
+		if (reportes.exists() && reportes.isDirectory()) {
+
+			File[] files = reportes.listFiles();
+			for (File fileToDelete : files) {
+				fileToDelete.delete();
+			}
+			reportes.delete();
+		}
+
+		// Apagando imagens de testes anteriores
+		File screenshots = new File(PATH_REPORT + PATH_IMAGENS);
+
+		if (screenshots.exists() && screenshots.isDirectory()) {
+
+			File[] files = screenshots.listFiles();
+			for (File fileToDelete : files) {
+				fileToDelete.delete();
+			}
+			screenshots.delete();
+		}
 
 		if (relatorio == null && extensao == null) {
 			new File(PATH_REPORT).mkdir();

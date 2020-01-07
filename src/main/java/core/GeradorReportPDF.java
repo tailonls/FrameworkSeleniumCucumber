@@ -11,18 +11,18 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class GeradorReportPDF extends BasePage{
+public class GeradorReportPDF extends BasePage {
 
 	private static Document documento = null;
 	private static String PATH = "target/Evidencias";
 	private static LocalDateTime dataLocal = LocalDateTime.now();
-	
+
 	private static String responsavelTestes = properties.getProperty("teste.nome");
 
 	public static void criaNovoReportPDF(String nomeCenario) {
 		new File(PATH).mkdir();
 		documento = new Document();
-		
+
 		try {
 			PdfWriter.getInstance(documento, new FileOutputStream(PATH + "/" + nomeCenario + ".pdf"));
 			documento.open();
@@ -32,7 +32,6 @@ public class GeradorReportPDF extends BasePage{
 			documento.addCreator("Automação testes");
 			documento.addTitle("Cenario: " + nomeCenario);
 			documento.addSubject("Arquivo PDF criado por um teste automatizado!");
-			
 
 			addParagrafoReportPDF("Cenario: " + nomeCenario);
 			addParagrafoReportPDF("Responsavel pelos testes: " + responsavelTestes);
@@ -60,32 +59,32 @@ public class GeradorReportPDF extends BasePage{
 	}
 
 	public static void addImagemReportPDF(String path_imagem) {
-		try {
 
-			if (documento.isOpen()) {
+		if (documento.isOpen()) {
+			try {
 				Image imagem = Image.getInstance(path_imagem);
 				imagem.scaleAbsolute(500, 250);
 				documento.add(imagem);
-			}
 
-		} catch (Exception e) {
-			System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
-			e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 	public static void addImagemPaginaInteiraReportPDF(String path_imagem) {
-		try {
-			
-			if (documento.isOpen()) {
+
+		if (documento.isOpen()) {
+			try {
 				Image imagem = Image.getInstance(path_imagem);
 				imagem.scaleAbsolute(350, 550);
 				documento.add(imagem);
-			}
 
-		} catch (Exception e) {
-			System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
-			e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
+				e.printStackTrace();
+			}
 		}
 	}
 

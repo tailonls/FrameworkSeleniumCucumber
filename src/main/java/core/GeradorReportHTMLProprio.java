@@ -22,6 +22,7 @@ public class GeradorReportHTMLProprio {
 	private static final String PATH_IMAGENS = "Screenshot/";
 
 	public static void inicializarReportHTML(String nomeCenario) {
+
 		try {
 			arquivo = new FileWriter(PATH_REPORT + nomeCenario + ".html");
 			gravarArq = new PrintWriter(arquivo);

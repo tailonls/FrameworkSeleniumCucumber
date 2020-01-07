@@ -41,7 +41,7 @@ public class FuncionalidadeStep {
 		page.setarEndpoint(endpont);
 	}
 
-	@Entao("o status do retorno deve ser {string}")
+	@Entao("o status do retorno deve ser {int}")
 	public void statusRetornoDeveSer(int statusEsperado) {
 		Assert.assertTrue("Retono diferente do esperado!", page.validaStatusRetorno(statusEsperado));
 	}
