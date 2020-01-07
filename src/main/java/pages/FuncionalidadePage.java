@@ -1,11 +1,6 @@
 package pages;
 
-import static core.GeradorReportHTML.logFail;
-import static core.GeradorReportHTML.logInfo;
-import static core.GeradorReportHTML.logPass;
-import static core.GeradorReportHTML.logPrintFail;
-import static core.GeradorReportHTML.logPrintPaginaInteira;
-import static core.GeradorReportHTML.logPrintPass;
+import static core.GeradorReportHTML.*;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;

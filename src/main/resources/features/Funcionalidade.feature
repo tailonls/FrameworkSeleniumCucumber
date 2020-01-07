@@ -1,9 +1,9 @@
 #language: pt
 Funcionalidade: Pesquisa no Github
   
-  Como um usuario da internet
-  Gostaria de acessar o Github
-  Para realizar pesquisas
+  #Como um usuario da internet
+  #Gostaria de acessar o Github
+  #Para realizar pesquisas
 
   @teste
   Cenario: Realizar uma pesquisa no Github
@@ -17,5 +17,3 @@ Funcionalidade: Pesquisa no Github
     Dado url "https://jsonplaceholder.typicode.com"
     Dado endpont "/todos/"
     Entao o status do retorno deve ser "200"
-
-    

@@ -18,13 +18,14 @@ import io.cucumber.core.api.Scenario;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
+import static core.DriverFactory.getDriver;
 
 public class GeradorReportHTML extends GeradorReportPDF {
 
 	static ExtentReports extensao = null;
 	static ExtentTest logger = null;
 	static ExtentHtmlReporter relatorio = null;
-	
+
 	private static String PATH_REPORT = "target/ReportHTML/";
 	private static String PATH_IMAGENS = "Screenshot/";
 
@@ -41,15 +42,15 @@ public class GeradorReportHTML extends GeradorReportPDF {
 	}
 
 	public static void addCenarioReportHTML(Scenario cenario) throws IOException {
-		
+
 		if (relatorio != null && extensao != null) {
-			
+
 			logger = extensao.createTest(cenario.getName());
 			logger.assignAuthor("Tailon Saraiva");
 			addCategoriaReport(cenario.getName());
-	
+
 			atualizaReportHTML();
-	
+
 			criaNovoReportPDF(cenario.getName());
 		}
 	}
@@ -66,7 +67,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
 	}
 
 	public static void logPrintPass(String log) {
-		
+
 		try {
 			String temp = getScreenshot();
 			logger.pass(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
@@ -121,7 +122,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
 
 		addParagrafoReportPDF("ERRO: " + log);
 	}
-	
+
 	public static void logPrintPaginaInteira(String log) {
 		try {
 			String temp = getScreenshotAllPage();
@@ -137,34 +138,39 @@ public class GeradorReportHTML extends GeradorReportPDF {
 	}
 
 	public static String getScreenshot() {
-		File src = ((TakesScreenshot) DriverFactory.getDriver()).getScreenshotAs(OutputType.FILE);
-
-		String PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
-		File destination = new File(PATH_REPORT + PATH_TEMPORARIO);
-
+		String PATH_TEMPORARIO = "";
 		try {
+			PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
+			File src = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+			File destination = new File(PATH_REPORT + PATH_TEMPORARIO);
 			FileUtils.copyFile(src, destination);
+
 		} catch (IOException e) {
-			System.out.println("Capture Failed " + e.getMessage());
+			System.out.println("Screenshot falhou! " + e.getMessage());
 		}
 		return PATH_TEMPORARIO;
 	}
-	
 
-	public static String getScreenshotAllPage() throws IOException {
-		String PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
+	public static String getScreenshotAllPage() {
+		String PATH_TEMPORARIO = "";
 
-		Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000))
-				.takeScreenshot(DriverFactory.getDriver());
+		try {
+			PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
+			Screenshot screenshot = new AShot().shootingStrategy(ShootingStrategies.viewportPasting(1000))
+					.takeScreenshot(getDriver());
+			ImageIO.write(screenshot.getImage(), "PNG", new File(PATH_REPORT + PATH_TEMPORARIO));
 
-		ImageIO.write(screenshot.getImage(), "PNG", new File(PATH_REPORT + PATH_TEMPORARIO));
+		} catch (IOException e) {
+			System.out.println("Screenshot 'all page' falhou! " + e.getMessage());
+		}
 
 		return PATH_TEMPORARIO;
 	}
 
 	public static void addCategoriaReport(String cenario) {
-		
-		if (cenario.toUpperCase().contains("API") || cenario.toUpperCase().contains("SERVICO") || cenario.toUpperCase().contains("REST"))
+
+		if (cenario.toUpperCase().contains("API") || cenario.toUpperCase().contains("SERVICO")
+				|| cenario.toUpperCase().contains("REST"))
 			logger.assignCategory("API");
 
 		else

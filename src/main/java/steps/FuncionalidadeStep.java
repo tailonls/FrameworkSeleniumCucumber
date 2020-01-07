@@ -11,37 +11,37 @@ public class FuncionalidadeStep {
 
 	FuncionalidadePage page = new FuncionalidadePage();
 
-	@Dado("^que acesso o site \"([^\"]*)\"$")
+	@Dado("que acesso o site {string}")
 	public void queAcessoSite(String site) {
 		page.acessarPaginaInicial(site);
 	}
 
-	@Entao("^a pagina inicial deve carregar$")
+	@Entao("a pagina inicial deve carregar")
 	public void paginaInicialDeveCarregar() {
 		Assert.assertTrue("Pagina inicial nao carregou!", page.deveCarregarPaginaInicial());
 	}
 
-	@Quando("^pesquiso pelo termo \"([^\"]*)\"$")
+	@Quando("pesquiso pelo termo {string}")
 	public void pesquisoPeloTermo(String termo) {
 		page.pesquisarTermo(termo);
 	}
 
-	@Entao("^deve carregar a pagina com resultados da pesquisa$")
+	@Entao("deve carregar a pagina com resultados da pesquisa")
 	public void deveCarregarPaginaComResultados() {
 		Assert.assertTrue("Nao carregou pagina com resultados!", page.deveCarregarPaginaComResultados());
 	}
 
-	@Dado("^url \"([^\"]*)\"$")
+	@Dado("url {string}")
 	public void url(String url) {
 		page.setarURL(url);
 	}
 
-	@Dado("^endpont \"([^\"]*)\"$")
+	@Dado("endpont {string}")
 	public void endpont(String endpont) {
 		page.setarEndpoint(endpont);
 	}
 
-	@Entao("^o status do retorno deve ser \"([^\"]*)\"$")
+	@Entao("o status do retorno deve ser {string}")
 	public void statusRetornoDeveSer(int statusEsperado) {
 		Assert.assertTrue("Retono diferente do esperado!", page.validaStatusRetorno(statusEsperado));
 	}
