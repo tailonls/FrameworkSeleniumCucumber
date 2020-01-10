@@ -8,8 +8,15 @@ import io.cucumber.junit.CucumberOptions;
 import io.cucumber.junit.CucumberOptions.SnippetType;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "@target/rerun.txt", glue = { "steps", "core" }, tags = "@teste", plugin = { "pretty",
-		"rerun:target/rerun.txt" }, snippets = SnippetType.CAMELCASE)
+@CucumberOptions(
+				features = "@target/rerun.txt", 
+				glue = { "steps", "core" }, tags = "@teste", 
+				plugin = { "pretty","rerun:target/rerun.txt" }, 
+				snippets = SnippetType.CAMELCASE,
+				strict = false,
+				dryRun = false
+				 
+)
 public class Rerun extends BaseTest {
 
 	// Executa os testes falhados que foram para o arquivo 'rerun.txt'
