@@ -14,10 +14,9 @@ public class DriverFactory {
 
 	public static WebDriver getDriver() {
 		if (driver == null) {
-			switch (Propriedades.browser) {
+			switch (Propriedades.BROWSER) {
 			case FIREFOX:
-				System.setProperty("webdriver.gecko.driver",
-						System.getProperty("user.dir") + "/src/main/resources/drivers/geckodriver.exe");
+				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/main/resources/drivers/geckodriver.exe");
 				driver = new FirefoxDriver();
 				break;
 
@@ -27,8 +26,7 @@ public class DriverFactory {
 				options.addArguments("--disable-print-preview");
 				options.addArguments("--lang=pt-br");
 
-				System.setProperty("webdriver.chrome.driver",
-						System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe");
+				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe");
 
 				// Funciona a partir da versão 60 do chrome
 				if (Propriedades.CHROME_HEADLESS) {
