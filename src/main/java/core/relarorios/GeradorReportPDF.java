@@ -1,95 +1,104 @@
 package core.relarorios;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import core.BasePage;
+import core.Propriedades;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.time.LocalDate;
 
-import static utils.DataUtils.converterData;
+public class GeradorReportPDF {
 
-public class GeradorReportPDF extends BasePage {
+    private static Document documento = null;
 
-	private static Document documento = null;
-	private static String PATH = "target/Evidencias";
-	private static LocalDate dataLocal = LocalDate.now();
+    private static final String PATH = "target/evidencias_PDF";
+    private static final String PATH_IMG = "target/report_HTML/";
+    private static int contador = 0;
+    private static int contadorNovaPagina = 0;
+    private static Font font = new Font();
 
-	private static String responsavelTestes = properties.getProperty("teste.nome");
+    public static void gerarDocumentoPDF(String nomeCenario) {
 
-	public static void criaNovoReportPDF(String nomeCenario) {
-		new File(PATH).mkdir();
-		documento = new Document();
+        if (contador == 0) {
+            File documentos = new File(PATH);
+            if (documentos.exists() && documentos.isDirectory()) {
+                File[] files = documentos.listFiles();
+                for (File fileToDelete : files) // Apagando pasta com PDFs de testes anteriores
+                    fileToDelete.delete();
+                documentos.delete();
+            }
+        }
+        contador++;
 
-		try {
-			PdfWriter.getInstance(documento, new FileOutputStream(PATH + "/" + nomeCenario + ".pdf"));
-			documento.open();
+        if (Propriedades.GERAR_EVIDENCIA_PDF) {
+            new File(PATH).mkdir();
+            documento = new Document();
 
-			documento.addAuthor(responsavelTestes);
-			documento.addCreationDate();
-			documento.addCreator("Automação testes");
-			documento.addTitle("Cenario: " + nomeCenario);
-			documento.addSubject("Arquivo PDF criado por um teste automatizado!");
+            try {
+                PdfWriter.getInstance(documento, new FileOutputStream(PATH + "/" + nomeCenario + ".pdf"));
+                documento.open();
+                documento.addTitle("Evidencia Teste Automatizado");
 
-			addParagrafoReportPDF("Cenario: " + nomeCenario);
-			addParagrafoReportPDF("Responsavel pelos testes: " + responsavelTestes);
-			addParagrafoReportPDF("Executado em: " + converterData(dataLocal));
-			addParagrafoReportPDF("______________________________________________________");
-			addParagrafoReportPDF("\n");
+            } catch (Exception e) {
+                System.out.println("Erro ao criar PDF para o cenario atual: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
 
-		} catch (Exception e) {
-			System.out.println("Erro ao inicializar report PDF! " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+    public static void addTextoDocumentoPDF(String texto) {
+        if (documento != null) {
+            try {
+                if (documento.isOpen())
 
-	public static void addParagrafoReportPDF(String paragrafo) {
+                    if (contadorNovaPagina > 1) {
+                        documento.newPage();
+                        contadorNovaPagina = 0;
+                    }
+                documento.add(new Paragraph(texto.replace("<b>", "").replace("</b>", "")));
 
-		if (documento.isOpen()) {
-			try {
-				documento.add(new Paragraph("\n" + paragrafo));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-			} catch (Exception e) {
-				System.out.println("Erro ao adicionar paragrafo no PDF!");
-				e.printStackTrace();
-			}
-		}
-	}
+    public static void addTextoDocumentoPDF(String texto, String destaque) {
+        if (documento != null) {
+            try {
+                if (documento.isOpen()) {
 
-	public static void addImagemReportPDF(String path_imagem) {
+                    if (destaque.equalsIgnoreCase("PASS"))
+                        font.setColor(BaseColor.GREEN);
+                    else
+                        font.setColor(BaseColor.RED);
 
-		if (documento.isOpen()) {
-			try {
-				Image imagem = Image.getInstance(path_imagem);
-				imagem.scaleAbsolute(500, 250);
-				documento.add(imagem);
+                    documento.add(new Paragraph(new Phrase(texto.replace("<b>", "").replace("</b>", ""), font)));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-			} catch (Exception e) {
-				System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
-	}
+    public static void addImagemDocumentoPDF(String path_imagem) {
+        if (documento != null) {
+            try {
+                if (documento.isOpen()) {
+                    Image image = Image.getInstance(PATH_IMG + path_imagem);
+                    image.scaleAbsolute(500, 250);
+                    documento.add(image);
+                    contadorNovaPagina++;
+                }
 
-	public static void addImagemPaginaInteiraReportPDF(String path_imagem) {
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-		if (documento.isOpen()) {
-			try {
-				Image imagem = Image.getInstance(path_imagem);
-				imagem.scaleAbsolute(350, 550);
-				documento.add(imagem);
-
-			} catch (Exception e) {
-				System.out.println("Erro ao adicionar imagem no PDF! " + e.getMessage());
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public static void encerraReportPDF() {
-		documento.close();
-	}
+    public static void encerraDocumentoPDF() {
+        if (documento != null)
+            documento.close();
+    }
 }

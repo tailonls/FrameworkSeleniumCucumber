@@ -14,7 +14,7 @@ import static core.DriverFactory.killDriver;
 public class BaseTest extends GeradorReportHTML {
 	
 	@BeforeClass
-	public static void iniciarTestes() throws IOException {
+	public static void iniciarTestes() {
 		inicializarReportHTML();
 	}
 
@@ -32,12 +32,11 @@ public class BaseTest extends GeradorReportHTML {
 		if (Propriedades.FECHAR_BROWSER) {
 			DriverFactory.killDriver();
 		}
-		
-		encerraReportPDF();
+		encerraDocumentoPDF();
 	}
 
 	@AfterClass
-	public static void finalizarTestes() throws IOException {
+	public static void finalizarTestes() {
 		atualizaReportHTML();
 		killDriver();
 	}
