@@ -15,30 +15,30 @@ public class DriverFactory {
 	public static WebDriver getDriver() {
 		if (driver == null) {
 			switch (Propriedades.BROWSER) {
-			case FIREFOX:
-				System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/main/resources/drivers/geckodriver.exe");
-				driver = new FirefoxDriver();
-				break;
+				case FIREFOX:
+					System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/main/resources/drivers/geckodriver.exe");
+					driver = new FirefoxDriver();
+					break;
 
-			case CHROME:
-				ChromeOptions options = new ChromeOptions();
-				options.addArguments("disable-infobars");
-				options.addArguments("--disable-print-preview");
-				options.addArguments("--lang=pt-br");
+				case CHROME:
+					ChromeOptions options = new ChromeOptions();
+					options.addArguments("disable-infobars");
+					options.addArguments("--disable-print-preview");
+					options.addArguments("--lang=pt-br");
 
-				System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe");
+					System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/main/resources/drivers/chromedriver.exe");
 
-				// Funciona a partir da versão 60 do chrome
-				if (Propriedades.CHROME_HEADLESS) {
-					options.addArguments("--headless");
-				}
+					// Funciona a partir da versão 60 do chrome
+					if (Propriedades.CHROME_HEADLESS) {
+						options.addArguments("--headless");
+					}
 
-				driver = new ChromeDriver(options);
-				break;
+					driver = new ChromeDriver(options);
+					break;
 
-			default:
-				System.out.println("Driver nao enontrado!");
-				break;
+				default:
+					System.out.println("Driver nao enontrado!");
+					break;
 			}
 		}
 		driver.manage().window().maximize();

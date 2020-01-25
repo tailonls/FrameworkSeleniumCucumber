@@ -1,15 +1,15 @@
 package core;
 
-import static core.DriverFactory.killDriver;
-
-import java.io.IOException;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-
+import core.relarorios.GeradorReportHTML;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
+import java.io.IOException;
+
+import static core.DriverFactory.killDriver;
 
 public class BaseTest extends GeradorReportHTML {
 	

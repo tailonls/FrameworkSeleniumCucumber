@@ -1,21 +1,22 @@
-package core;
-
-import static utils.DataUtils.converterData;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.time.LocalDateTime;
+package core.relarorios;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import core.BasePage;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDate;
+
+import static utils.DataUtils.converterData;
 
 public class GeradorReportPDF extends BasePage {
 
 	private static Document documento = null;
 	private static String PATH = "target/Evidencias";
-	private static LocalDateTime dataLocal = LocalDateTime.now();
+	private static LocalDate dataLocal = LocalDate.now();
 
 	private static String responsavelTestes = properties.getProperty("teste.nome");
 

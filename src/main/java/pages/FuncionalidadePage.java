@@ -1,10 +1,8 @@
 package pages;
 
-import static core.GeradorReportHTML.*;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import core.DriverFactory;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -12,10 +10,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import core.DriverFactory;
+import static core.relarorios.GeradorReportHTML.*;
 
 public class FuncionalidadePage extends FuncionalidadePageElementMap {
 

@@ -1,5 +1,6 @@
 package utils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -21,8 +22,8 @@ public class DataUtils {
 		return cal.getTime();
 	}
 
-	public static String converterData(LocalDateTime dataLocal) {
-		DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+	public static String converterData(LocalDate dataLocal) {
+		DateTimeFormatter formatadorBarra = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return dataLocal.format(formatadorBarra);
 	}
 }
