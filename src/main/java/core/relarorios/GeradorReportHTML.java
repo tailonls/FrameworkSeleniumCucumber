@@ -14,20 +14,19 @@ import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 
 import static core.DriverFactory.getDriver;
 
 public class GeradorReportHTML extends GeradorReportPDF {
 
-    static ExtentReports extensao = null;
-    static ExtentTest logger = null;
-    static ExtentHtmlReporter relatorio = null;
+    private static ExtentReports extensao = null;
+    private static ExtentTest logger = null;
+    private static ExtentHtmlReporter relatorio = null;
 
     private static String PATH_REPORT = "target/ReportHTML/";
     private static String PATH_IMAGENS = "Screenshot/";
 
-    public static void inicializarReportHTML() {
+    protected static void inicializarReportHTML() {
 
         // Apagando pasta com html de testes anteriores
         File reportes = new File(PATH_REPORT);
@@ -63,7 +62,7 @@ public class GeradorReportHTML extends GeradorReportPDF {
         }
     }
 
-    public static void addCenarioReportHTML(Scenario cenario) throws IOException {
+    protected static void addCenarioReportHTML(Scenario cenario) {
 
         if (relatorio != null && extensao != null) {
 
@@ -73,19 +72,21 @@ public class GeradorReportHTML extends GeradorReportPDF {
 
             atualizaReportHTML();
 
-            criaNovoReportPDF(cenario.getName());
+            gerarDocumentoPDF(cenario.getName());
         }
     }
 
-    public static void atualizaReportHTML() {
+    protected static void atualizaReportHTML() {
         extensao.flush();
     }
 
     public static void logPass(String log) {
-        logger.pass(log);
-        atualizaReportHTML();
+        if (relatorio != null && extensao != null) {
+            logger.pass(log);
+            atualizaReportHTML();
 
-        addParagrafoReportPDF("PASSOU: " + log);
+            addTextoDocumentoPDF("PASSOU: " + log);
+        }
     }
 
     public static void logPrintPass(String log) {
@@ -95,19 +96,21 @@ public class GeradorReportHTML extends GeradorReportPDF {
             logger.pass(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
             atualizaReportHTML();
 
-            addParagrafoReportPDF("PASSOU: " + log);
-            addImagemReportPDF(PATH_REPORT + temp);
+            addTextoDocumentoPDF("PASSOU: " + log);
+            addImagemDocumentoPDF(PATH_REPORT + temp);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             logFail("Capture Failed " + e.getMessage());
         }
     }
 
     public static void logFail(String log) {
-        logger.fail(log);
-        atualizaReportHTML();
+        if (relatorio != null && extensao != null) {
+            logger.fail(log);
+            atualizaReportHTML();
 
-        addParagrafoReportPDF("FALHOU: " + log);
+            addTextoDocumentoPDF("FALHOU: " + log);
+        }
     }
 
     public static void logPrintFail(String log) {
@@ -116,33 +119,39 @@ public class GeradorReportHTML extends GeradorReportPDF {
             logger.fail(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
             atualizaReportHTML();
 
-            addParagrafoReportPDF("FALHOU: " + log);
-            addImagemReportPDF(PATH_REPORT + temp);
+            addTextoDocumentoPDF("FALHOU: " + log);
+            addImagemDocumentoPDF(PATH_REPORT + temp);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             logFail("Capture Failed " + e.getMessage());
         }
     }
 
     public static void logInfo(String log) {
-        logger.info(log);
-        atualizaReportHTML();
+        if (relatorio != null && extensao != null) {
+            logger.info(log);
+            atualizaReportHTML();
 
-        addParagrafoReportPDF(log);
+            addTextoDocumentoPDF(log);
+        }
     }
 
     public static void logAviso(String log) {
-        logger.warning(log);
-        atualizaReportHTML();
+        if (relatorio != null && extensao != null) {
+            logger.warning(log);
+            atualizaReportHTML();
 
-        addParagrafoReportPDF("AVISO:" + log);
+            addTextoDocumentoPDF("AVISO:" + log);
+        }
     }
 
     public static void logErro(String log) {
-        logger.error(log);
-        atualizaReportHTML();
+        if (relatorio != null && extensao != null) {
+            logger.error(log);
+            atualizaReportHTML();
 
-        addParagrafoReportPDF("ERRO: " + log);
+            addTextoDocumentoPDF("ERRO: " + log);
+        }
     }
 
     public static void logPrintPaginaInteira(String log) {
@@ -151,15 +160,15 @@ public class GeradorReportHTML extends GeradorReportPDF {
             logger.pass(log, MediaEntityBuilder.createScreenCaptureFromPath(temp).build());
             atualizaReportHTML();
 
-            addParagrafoReportPDF(log);
-            addImagemPaginaInteiraReportPDF(PATH_REPORT + temp);
+            addTextoDocumentoPDF(log);
+            addImagemDocumentoPDF(PATH_REPORT + temp);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             logFail("Capture Failed " + e.getMessage());
         }
     }
 
-    public static String getScreenshot() {
+    private static String getScreenshot() {
         String PATH_TEMPORARIO = "";
         try {
             PATH_TEMPORARIO = PATH_IMAGENS + System.currentTimeMillis() + ".png";
@@ -167,13 +176,13 @@ public class GeradorReportHTML extends GeradorReportPDF {
             File destination = new File(PATH_REPORT + PATH_TEMPORARIO);
             FileUtils.copyFile(src, destination);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Screenshot falhou! " + e.getMessage());
         }
         return PATH_TEMPORARIO;
     }
 
-    public static String getScreenshotAllPage() {
+    private static String getScreenshotAllPage() {
         String PATH_TEMPORARIO = "";
 
         try {
@@ -182,27 +191,28 @@ public class GeradorReportHTML extends GeradorReportPDF {
                     .takeScreenshot(getDriver());
             ImageIO.write(screenshot.getImage(), "PNG", new File(PATH_REPORT + PATH_TEMPORARIO));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Screenshot 'all page' falhou! " + e.getMessage());
         }
 
         return PATH_TEMPORARIO;
     }
 
-    public static void addCategoriaReport(String cenario) {
+    private static void addCategoriaReport(String cenario) {
 
-        if (cenario.toUpperCase().contains("API") || cenario.toUpperCase().contains("SERVICO")
-                || cenario.toUpperCase().contains("REST"))
-            logger.assignCategory("API");
+        if (relatorio != null && extensao != null) {
+            if (cenario.toUpperCase().contains("API") || cenario.toUpperCase().contains("SERVICO")
+                    || cenario.toUpperCase().contains("REST"))
+                logger.assignCategory("API");
 
-        else
-            logger.assignCategory("TELA");
+            else
+                logger.assignCategory("TELA");
 
-        if (cenario.toUpperCase().contains("SMOKE"))
-            logger.assignCategory("SMOKE");
+            if (cenario.toUpperCase().contains("SMOKE"))
+                logger.assignCategory("SMOKE");
 
-        else
-            logger.assignCategory("FUNCIONAL");
-
+            else
+                logger.assignCategory("FUNCIONAL");
+        }
     }
 }

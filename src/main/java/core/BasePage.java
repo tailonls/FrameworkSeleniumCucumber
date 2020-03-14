@@ -7,7 +7,6 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
@@ -25,7 +24,7 @@ public class BasePage {
 		try {
 			properties.load(BaseTest.class.getClassLoader().getResourceAsStream("config.properties"));
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.out.println("Erro ao carregar arquivo de properties: " + e.getMessage());
 		}
 	}

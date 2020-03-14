@@ -1,4 +1,4 @@
-package br.com.unicred.caixa.utils;
+package utils;
 
 import java.util.Arrays;
 

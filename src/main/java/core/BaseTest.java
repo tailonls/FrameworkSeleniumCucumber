@@ -7,37 +7,35 @@ import io.cucumber.java.Before;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import java.io.IOException;
-
 import static core.DriverFactory.killDriver;
 
 public class BaseTest extends GeradorReportHTML {
-	
-	@BeforeClass
-	public static void iniciarTestes() {
-		inicializarReportHTML();
-	}
 
-	@Before
-	public static void iniciarCenario(Scenario cenario) throws IOException {
-		addCenarioReportHTML(cenario);
-	}
+    @BeforeClass
+    public static void iniciarTestes() {
+        inicializarReportHTML();
+    }
 
-	@After
-	public void finalizarCenario(Scenario cenario) {
-		if (cenario.isFailed()) {
-			logFail("O cenario falhou!");
-		}
+    @Before
+    public void iniciarCenario(Scenario cenario) {
+        addCenarioReportHTML(cenario);
+    }
 
-		if (Propriedades.FECHAR_BROWSER) {
-			DriverFactory.killDriver();
-		}
-		encerraDocumentoPDF();
-	}
+    @After
+    public void finalizarCenario(Scenario cenario) {
+        if (cenario.isFailed()) {
+            logFail("O cenario falhou!");
+        }
 
-	@AfterClass
-	public static void finalizarTestes() {
-		atualizaReportHTML();
-		killDriver();
-	}
+        if (Propriedades.FECHAR_BROWSER) {
+            DriverFactory.killDriver();
+        }
+        encerraDocumentoPDF();
+    }
+
+    @AfterClass
+    public static void finalizarTestes() {
+        atualizaReportHTML();
+        killDriver();
+    }
 }
