@@ -17,109 +17,114 @@ import static core.relarorios.GeradorReportHTML.*;
 
 public class FuncionalidadePage extends FuncionalidadePageElementMap {
 
-	WebDriver driver = DriverFactory.getDriver();
+    private WebDriver driver = DriverFactory.getDriver();
+    private BancoDeDados bd = BancoDeDados.getInstance();
 
-	private String URL = null;
-	private String ENDPOINT = null;
-	private HttpResponse<String> RESPONSE = null;
+    private String URL = null;
+    private String ENDPOINT = null;
+    private HttpResponse<String> RESPONSE = null;
 
-	public FuncionalidadePage() {
-		// Inicializar elementos da classe ElementMap
-		PageFactory.initElements(driver, this);
-	}
+    public FuncionalidadePage() {
+        PageFactory.initElements(driver, this); // Inicializar elementos da classe ElementMap
+    }
 
-	public void acessarPaginaInicial(String pagina) {
-		DriverFactory.getDriver().get(pagina);
-		aguardarSegundos(3);
-		logPrintPass("Acessou página " + pagina);
-	}
+    public void acessarPaginaInicial() {
+		String paginaWeb = properties.getProperty("teste.url");
 
-	public boolean deveCarregarPaginaInicial() {
-		aguardarSegundos(1);
-		if (aguardaElemento(By.xpath(DIV_PAGINA_INICIAL), 2) != null) {
-			logPrintPass("Pagina inicial carregou com sucesso!");
-			return true;
-		}
+		DriverFactory.getDriver().get(paginaWeb);
+        aguardarSegundos(3);
+        logPrintPass("Acessou página " + paginaWeb);
+    }
 
-		logPrintFail("Pagina inicial NAO apareceu!");
-		return false;
-	}
+    public boolean deveCarregarPaginaInicial() {
+        aguardarSegundos(1);
+        if (aguardaElemento(By.xpath(DIV_PAGINA_INICIAL), 2) != null) {
+            logPrintPass("Pagina inicial carregou com sucesso!");
+            return true;
+        }
 
-	public void pesquisarTermo(String termo) {
-		aguardarSegundos(1);
+        logPrintFail("Pagina inicial NAO apareceu!");
+        return false;
+    }
 
-		WebElement campoPesquisa = aguardaElemento(By.xpath(CAMPO_PESQUISA), 3);
+    public void pesquisarTermo(String termo) {
+        aguardarSegundos(1);
 
-		if (campoPesquisa != null) {
-			escrever(termo, campoPesquisa);
-			logPrintPass("Informou o termo [" + termo + "] no campo de pesquisa!");
-			escrever(Keys.ENTER, campoPesquisa);
+        WebElement campoPesquisa = aguardaElemento(By.xpath(CAMPO_PESQUISA), 3);
 
-		} else {
-			logPrintFail("NAO encontrou o campo de pesquisa!");
-			Assert.fail();
-		}
-	}
+        if (campoPesquisa != null) {
+            escrever(termo, campoPesquisa);
+            logPrintPass("Informou o termo [" + termo + "] no campo de pesquisa!");
+            escrever(Keys.ENTER, campoPesquisa);
 
-	public boolean deveCarregarPaginaComResultados() {
-		aguardarSegundos(1);
-		List<WebElement> resultados = driver.findElements(By.xpath(RESULTADOS_PESQUISA));
+        } else {
+            logPrintFail("NAO encontrou o campo de pesquisa!");
+            Assert.fail();
+        }
+    }
 
-		if (resultados != null) {
-			logPrintPaginaInteira("Pagina carregou com sucesso mostrando " + resultados.size() + " resultados!");
-			return true;
-		}
+    public boolean deveCarregarPaginaComResultados() {
+        aguardarSegundos(1);
+        List<WebElement> resultados = driver.findElements(By.xpath(RESULTADOS_PESQUISA));
 
-		logPrintFail("Pagina com resultados NAO apareceu!");
-		return false;
-	}
+        if (resultados != null) {
+            logPrintPaginaInteira("Pagina carregou com sucesso mostrando " + resultados.size() + " resultados!");
+            return true;
+        }
 
-	// PARA USO FUTURO
-	public boolean validandoVariosElementos() {
-		AtomicBoolean validar = new AtomicBoolean();
+        logPrintFail("Pagina com resultados NAO apareceu!");
+        return false;
+    }
 
-		validar.set(comparaValores("casa", "casa") && comparaValores("casa", "CASA") && comparaValores("casa", "caza"));
+    // PARA USO FUTURO
+    private boolean validandoVariosElementos() {
+        AtomicBoolean validar = new AtomicBoolean();
 
-		if (validar.get())
-			logPass("Valores estavam de acordo com o esperado!");
+        validar.set(
+                saoValoresIguais("casa", "CAZA") &&
+                        saoValoresIguais("casas", "CASA") &&
+                        saoValoresIguais("casa", "caza"));
 
-		return validar.get();
-	}
+        if (validar.get())
+            logPass("Valores estavam de acordo com o esperado!");
 
-	public boolean comparaValores(String valorEsperado, String valorObtido) {
-		boolean valida = valorEsperado.equalsIgnoreCase(valorObtido);
-		if (!valida)
-			logFail("Erro: valor esperado: [" + valorEsperado + "] valor recebido: [" + valorObtido + "]!");
+        return validar.get();
+    }
 
-		return valida;
-	}
+    private boolean saoValoresIguais(String valorEsperado, String valorObtido) {
+        boolean valida = valorEsperado.equalsIgnoreCase(valorObtido);
+        if (!valida)
+            logFail("Erro: valor esperado: [" + valorEsperado + "] valor recebido: [" + valorObtido + "]!");
 
-	public void setarURL(String url) {
-		URL = url;
-		logInfo("Setou URL: " + URL);
-	}
+        return valida;
+    }
 
-	public void setarEndpoint(String endpont) {
-		ENDPOINT = endpont;
-		logInfo("Setou ENDPOINT: " + ENDPOINT);
-	}
+    public void setarURL(String url) {
+        URL = url;
+        logInfo("Setou URL: " + URL);
+    }
 
-	public boolean validaStatusRetorno(int statusEsperado) {
+    public void setarEndpoint(String endpont) {
+        ENDPOINT = endpont;
+        logInfo("Setou ENDPOINT: " + ENDPOINT);
+    }
 
-		try {
-			RESPONSE = Unirest.get(URL + ENDPOINT).header("accept", "application/json").asString();
-			logInfo("Executou requisicao do tipo GET...");
+    public boolean validaStatusRetorno(int statusEsperado) {
 
-		} catch (Exception e) {
-			logFail("Erro ao realizar requisicao GET: " + e.getMessage());
-			e.printStackTrace();
-		}
+        try {
+            RESPONSE = Unirest.get(URL + ENDPOINT).header("accept", "application/json").asString();
+            logInfo("Executou requisicao do tipo GET...");
 
-		if (RESPONSE.getStatus() == statusEsperado) {
-			logPass("Status da requisicao retornou conforme esperado: " + RESPONSE.getStatus());
-			return true;
-		}
-		logFail("Erro! Status da requisicao esperado: " + statusEsperado + " status obtido: " + RESPONSE.getStatus());
-		return false;
-	}
+        } catch (Exception e) {
+            logFail("Erro ao realizar requisicao GET: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        if (RESPONSE.getStatus() == statusEsperado) {
+            logPass("Status da requisicao retornou conforme esperado: " + RESPONSE.getStatus());
+            return true;
+        }
+        logFail("Erro! Status da requisicao esperado: " + statusEsperado + " status obtido: " + RESPONSE.getStatus());
+        return false;
+    }
 }

@@ -7,7 +7,7 @@ Funcionalidade: Pesquisa no Github
 
   @teste
   Cenario: Realizar uma pesquisa no Github
-    Dado que acesso o site "https://github.com/"
+    Dado que acesso o site do github
     Entao a pagina inicial deve carregar
     Quando pesquiso pelo termo "teste"
     Entao deve carregar a pagina com resultados da pesquisa

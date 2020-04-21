@@ -8,11 +8,11 @@ import pages.FuncionalidadePage;
 
 public class FuncionalidadeStep {
 
-	FuncionalidadePage page = new FuncionalidadePage();
+	private FuncionalidadePage page = new FuncionalidadePage();
 
-	@Dado("que acesso o site {string}")
-	public void queAcessoSite(String site) {
-		page.acessarPaginaInicial(site);
+	@Dado("que acesso o site do github")
+	public void queAcessoSite() {
+		page.acessarPaginaInicial();
 	}
 
 	@Entao("a pagina inicial deve carregar")
