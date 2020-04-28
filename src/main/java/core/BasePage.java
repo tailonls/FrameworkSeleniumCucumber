@@ -22,7 +22,7 @@ public class BasePage {
 
 	public BasePage() {
 		try {
-			properties.load(BaseTest.class.getClassLoader().getResourceAsStream("config.properties"));
+			properties.load(BaseTest.class.getClassLoader().getResourceAsStream(".properties"));
 
 		} catch (Exception e) {
 			System.out.println("Erro ao carregar arquivo de properties: " + e.getMessage());

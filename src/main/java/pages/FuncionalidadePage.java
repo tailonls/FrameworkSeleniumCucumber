@@ -18,7 +18,6 @@ import static core.relarorios.GeradorReportHTML.*;
 public class FuncionalidadePage extends FuncionalidadePageElementMap {
 
     private WebDriver driver = DriverFactory.getDriver();
-    private BancoDeDados bd = BancoDeDados.getInstance();
 
     private String URL = null;
     private String ENDPOINT = null;

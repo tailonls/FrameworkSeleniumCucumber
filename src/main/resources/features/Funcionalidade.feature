@@ -1,9 +1,9 @@
 #language: pt
 Funcionalidade: Pesquisa no Github
   
-  Como um usuario da internet
-  Gostaria de acessar o Github
-  Para realizar pesquisas
+  # Como um usuario da internet
+  # Gostaria de acessar o Github
+  # Para realizar pesquisas
 
   @teste
   Cenario: Realizar uma pesquisa no Github

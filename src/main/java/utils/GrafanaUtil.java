@@ -1,5 +1,6 @@
-package core;
+package utils;
 
+import core.BasePage;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RestClient;
@@ -41,10 +42,10 @@ public class GrafanaUtil extends BasePage {
 
         try {
             restClient.performRequest(request);
-            System.out.println("\nDados enviados com sucesso para o index: " + url);
+        System.out.println("\nDados enviados com sucesso para o index: " + url);
 
-        } catch (Exception e) {
-            System.out.println("[ERRO] Ao enviar dados ao Elasticsearch: " + e.getMessage());
-        }
+    } catch (Exception e) {
+        System.out.println("[ERRO] Ao enviar dados ao Elasticsearch: " + e.getMessage());
+    }
     }
 }
